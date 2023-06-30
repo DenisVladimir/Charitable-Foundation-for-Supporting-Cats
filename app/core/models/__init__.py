@@ -1,4 +1,4 @@
-from .charity_project import CharityProject
-from .base import get_async_session
-from .donation import Donation
-from .user import User
+from .charity_project import CharityProject # noqa
+from .base import get_async_session # noqa
+from .donation import Donation # noqa
+from .user import User # noqa
