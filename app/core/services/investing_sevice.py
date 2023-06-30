@@ -39,7 +39,7 @@ async def investment(
     :param model:  - модель, открытые объекты которой мы будем перебирать.
     """
     all_open_obj = await session.execute(
-        select(model).where(model.fully_invested == False)
+        select(model).where(model.fully_invested.is_(False))
     )
     all_open_obj = all_open_obj.scalars().all()
     for open_obj in all_open_obj:
