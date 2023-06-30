@@ -12,15 +12,16 @@ try:
 except (NameError, ImportError):
     raise AssertionError(
         'Не обнаружен объект приложения `app`.'
-        'Проверьте и поправьте: он должен быть доступен в модуле `app.start_app`.',
+        'Проверьте и поправьте: он должен быть доступен в модуле `app.main`.',
     )
 
 try:
-    from app.core.models.base import Base, get_async_session
+    from app.core.db import Base, get_async_session
 except (NameError, ImportError):
     raise AssertionError(
         'Не обнаружены объекты `Base, get_async_session`. '
-        'Проверьте и поправьте: они должны быть доступны в модуле `app.core.models`.',
+        'Проверьте и поправьте: они должны быть доступны в модуле '
+        '`app.core.db`.',
     )
 
 try:
@@ -28,7 +29,8 @@ try:
 except (NameError, ImportError):
     raise AssertionError(
         'Не обнаружены объекты `current_superuser, current_user`.'
-        'Проверьте и поправьте: они должны быть доступны в модуле `app.code.user`',
+        'Проверьте и поправьте: они должны быть доступны в модуле '
+        '`app.code.user`',
     )
 
 try:
@@ -36,7 +38,8 @@ try:
 except (NameError, ImportError):
     raise AssertionError(
         'Не обнаружена схема создания пользователя UserCreate. '
-        'Проверьте и поправьте: она должна быть доступна в модуле `app.schemas.user`.',
+        'Проверьте и поправьте: она должна быть доступна в модуле '
+        '`app.schemas.user`.',
     )
 
 
@@ -51,7 +54,7 @@ TEST_DB = BASE_DIR / 'test.db'
 SQLALCHEMY_DATABASE_URL = f'sqlite+aiosqlite:///{str(TEST_DB)}'
 engine = create_async_engine(
     SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False},
+    connect_args={'check_same_thread': False},
 )
 TestingSessionLocal = sessionmaker(
     class_=AsyncSession, autocommit=False, autoflush=False, bind=engine,

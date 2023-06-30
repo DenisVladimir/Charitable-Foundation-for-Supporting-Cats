@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Union
 
-from app.core.models import CharityProject, Donation
+from app.models import CharityProject, Donation
 
 
 def set_close(obj: Union[CharityProject, Donation]) -> Union[CharityProject, Donation]:

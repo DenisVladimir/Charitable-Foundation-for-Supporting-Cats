@@ -3,7 +3,7 @@ from typing import List
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.models import Donation, User
+from app.models import Donation, User
 from app.crud.base import CRUDBase
 
 

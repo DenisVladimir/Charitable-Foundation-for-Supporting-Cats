@@ -1,6 +1,6 @@
 from typing import Optional, Union
 
-from app.core.models import CharityProject, Donation, User
+from app.models import CharityProject, Donation, User
 
 
 def set_user(

@@ -3,7 +3,7 @@ from typing import List, Optional, Union
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.models import CharityProject, Donation, User
+from app.models import CharityProject, Donation, User
 from app.core.services import set_user_service
 
 

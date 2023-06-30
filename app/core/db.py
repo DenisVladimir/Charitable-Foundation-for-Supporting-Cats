@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.ext.declarative import as_declarative
 from sqlalchemy.orm import declared_attr, sessionmaker
 
-from app.core.settings import settings
+from app.core.config import settings
 
 
 @as_declarative()

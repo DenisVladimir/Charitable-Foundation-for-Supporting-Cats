@@ -1,20 +1,13 @@
 from datetime import datetime
 
-from sqlalchemy import (
-    Boolean,
-    Column,
-    DateTime,
-    ForeignKey,
-    Integer,
-    Text,
-)
+from sqlalchemy import Boolean, Column, DateTime, Integer, String, Text
 
-from app.core.models.base import Base
+from app.core.db import Base
 
 
-class Donation(Base):
-    user_id = Column(Integer, ForeignKey("user.id"))
-    comment = Column(Text)
+class CharityProject(Base):
+    name = Column(String(100), unique=True, nullable=False)
+    description = Column(Text, nullable=False)
     full_amount = Column(Integer, nullable=False)
     invested_amount = Column(Integer, default=0)
     fully_invested = Column(Boolean, default=False)
@@ -23,7 +16,7 @@ class Donation(Base):
 
     def __repr__(self):
         return (
-            f"<User_id: {self.user_id}, "
+            f"<Name: {self.name}, "
             f"full_amount: {self.full_amount}, "
             f"invested_amount: {self.invested_amount}, "
             f"fully_invested: {self.fully_invested}>"

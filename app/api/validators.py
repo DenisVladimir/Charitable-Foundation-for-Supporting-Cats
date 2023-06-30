@@ -3,7 +3,7 @@ from typing import Union
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.models import CharityProject
+from app.models import CharityProject
 from app.crud.charity_project import charity_project_crud
 from app.schemas.charity_project import (
     CharityProjectCreateRequest,
