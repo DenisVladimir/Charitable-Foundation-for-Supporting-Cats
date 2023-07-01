@@ -1,4 +1,5 @@
 from pathlib import Path
+import traceback
 
 import pytest
 import pytest_asyncio
@@ -10,14 +11,18 @@ from sqlalchemy.orm import sessionmaker
 try:
     from app.main import app
 except (NameError, ImportError):
+    traceback.print_exception(app)
+    
     raise AssertionError(
         'Не обнаружен объект приложения `app`.'
         'Проверьте и поправьте: он должен быть доступен в модуле `app.main`.',
     )
 
+
 try:
     from app.core.db import Base, get_async_session
 except (NameError, ImportError):
+    traceback.print_exception(Base, get_async_session)
     raise AssertionError(
         'Не обнаружены объекты `Base, get_async_session`. '
         'Проверьте и поправьте: они должны быть доступны в модуле `app.core.db`.',
@@ -26,6 +31,7 @@ except (NameError, ImportError):
 try:
     from app.core.user import current_superuser, current_user
 except (NameError, ImportError):
+    traceback.print_exception(current_superuser, current_user)
     raise AssertionError(
         'Не обнаружены объекты `current_superuser, current_user`.'
         'Проверьте и поправьте: они должны быть доступны в модуле `app.code.user`',
@@ -34,6 +40,7 @@ except (NameError, ImportError):
 try:
     from app.schemas.user import UserCreate
 except (NameError, ImportError):
+    traceback.print_exception(UserCreate)
     raise AssertionError(
         'Не обнаружена схема создания пользователя UserCreate. '
         'Проверьте и поправьте: она должна быть доступна в модуле `app.schemas.user`.',
