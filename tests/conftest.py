@@ -11,8 +11,8 @@ from sqlalchemy.orm import sessionmaker
 try:
     from app.main import app
 except (NameError, ImportError):
-    traceback.print_exception(app)
-    
+    tb = traceback.format_exc()
+    print(tb)
     raise AssertionError(
         'Не обнаружен объект приложения `app`.'
         'Проверьте и поправьте: он должен быть доступен в модуле `app.main`.',
@@ -22,7 +22,8 @@ except (NameError, ImportError):
 try:
     from app.core.db import Base, get_async_session
 except (NameError, ImportError):
-    traceback.print_exception(Base, get_async_session)
+    tb = traceback.format_exc()
+    print(tb)
     raise AssertionError(
         'Не обнаружены объекты `Base, get_async_session`. '
         'Проверьте и поправьте: они должны быть доступны в модуле `app.core.db`.',
@@ -31,7 +32,8 @@ except (NameError, ImportError):
 try:
     from app.core.user import current_superuser, current_user
 except (NameError, ImportError):
-    traceback.print_exception(current_superuser, current_user)
+    tb = traceback.format_exc()
+    print(tb)
     raise AssertionError(
         'Не обнаружены объекты `current_superuser, current_user`.'
         'Проверьте и поправьте: они должны быть доступны в модуле `app.code.user`',
@@ -40,7 +42,8 @@ except (NameError, ImportError):
 try:
     from app.schemas.user import UserCreate
 except (NameError, ImportError):
-    traceback.print_exception(UserCreate)
+    tb = traceback.format_exc()
+    print(tb)
     raise AssertionError(
         'Не обнаружена схема создания пользователя UserCreate. '
         'Проверьте и поправьте: она должна быть доступна в модуле `app.schemas.user`.',
