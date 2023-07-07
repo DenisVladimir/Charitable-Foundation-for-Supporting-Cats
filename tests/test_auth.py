@@ -39,6 +39,9 @@ def test_register_invalid_pass(user_client):
     assert data == {
         'detail': {
             'code': 'REGISTER_INVALID_PASSWORD',
-            'reason': 'Пароль должен состоять не менее чем из 3 символов',
+            'reason': 'Password should be at least 3 characters',
         },
-    }, 'При некорректной регистрации пользователя тело ответа API отличается от ожидаемого.'
+    }, (
+        'При некорректной регистрации пользователя тело ответа API отличается '
+        'от ожидаемого.'
+    )
