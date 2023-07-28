@@ -1,15 +1,8 @@
-from distutils.cygwinccompiler import get_versions
 from typing import Union
-from fastapi import Depends
-
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.core.db import get_async_session
-
 from app.models import CharityProject, Donation
-
 from datetime import datetime
-
 
 
 def set_close(obj: Union[CharityProject, Donation]) -> Union[CharityProject, Donation]:
@@ -35,6 +28,7 @@ def reinvestment(
         to_close_new_obj -= to_close_open_obj
         new_obj.invested_amount += to_close_open_obj
     return new_obj, open_obj
+
 
 async def investment(
     new_obj: Union[CharityProject, Donation],
