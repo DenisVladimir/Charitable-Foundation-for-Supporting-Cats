@@ -1,10 +1,23 @@
+from distutils.cygwinccompiler import get_versions
 from typing import Union
+from fastapi import Depends
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from app.core.db import get_async_session
 
 from app.models import CharityProject, Donation
-from app.core.services import close_service
+
+from datetime import datetime
+
+
+
+def set_close(obj: Union[CharityProject, Donation]) -> Union[CharityProject, Donation]:
+    """Закрывает объект и добавляет дату закрытия."""
+    if obj.full_amount == obj.invested_amount:
+        obj.fully_invested = True
+        obj.close_date = datetime.now()
+    return obj
 
 
 def reinvestment(
@@ -23,11 +36,10 @@ def reinvestment(
         new_obj.invested_amount += to_close_open_obj
     return new_obj, open_obj
 
-
 async def investment(
     new_obj: Union[CharityProject, Donation],
     model: Union[CharityProject, Donation],
-    session: AsyncSession,
+    session: AsyncSession
 ) -> None:
     """
     Перебирает открытые проекты/пожертвования,
@@ -45,10 +57,10 @@ async def investment(
     for open_obj in all_open_obj:
         new_obj, open_obj = reinvestment(new_obj, open_obj)
         if open_obj.invested_amount == open_obj.full_amount:
-            open_obj = close_service.set_close(open_obj)
+            open_obj = set_close(open_obj)
         session.add(open_obj)
         if new_obj.invested_amount == new_obj.full_amount:
-            new_obj = close_service.set_close(new_obj)
+            new_obj = set_close(new_obj)
             break
     session.add(new_obj)
     await session.commit()
