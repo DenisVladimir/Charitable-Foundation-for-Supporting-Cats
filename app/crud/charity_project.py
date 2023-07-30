@@ -7,16 +7,6 @@ from app.crud.base import CRUDBase
 
 
 class CRUDCharityProject(CRUDBase):
-    async def get_or_none(
-        self,
-        charity_id: int,
-        session: AsyncSession,
-    ) -> Optional[CharityProject]:
-        """Возвращает объект CharityProject из БД по его id, либо возвращает None."""
-        db_obj = await session.execute(
-            select(self._model).where(self._model.id == charity_id)
-        )
-        return db_obj.scalars().first()
 
     async def exist_by_name(
         self,

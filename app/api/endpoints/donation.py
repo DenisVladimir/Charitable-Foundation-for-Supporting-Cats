@@ -3,6 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 from fastapi_restful.cbv import cbv
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 
 from app.models import CharityProject, User
 from app.core.db import get_async_session
@@ -50,7 +51,16 @@ class DonationCBV:
     ) -> DonationDBResponse:
         """Создает пожертвование."""
         new_donation = await donation_crud.create(donation, self.session, user)
-        await investing_sevice.investment(new_donation, CharityProject, self.session)
+        
+        all_open_obj = await self.session.execute(
+        select(CharityProject).where(CharityProject.fully_invested.is_(False))
+    )
+        all_open_obj = all_open_obj.scalars().all()
+        new_donation, open_project = investing_sevice.investment(new_donation, all_open_obj)
+        self.session.add(new_donation)
+        self.session.add_all(open_project)
+        await self.session.commit()
+        await self.session.refresh(new_donation)
         return new_donation
 
     @router.get(
