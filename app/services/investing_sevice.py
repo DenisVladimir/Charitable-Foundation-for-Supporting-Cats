@@ -1,6 +1,4 @@
 from typing import Union
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 from app.models import CharityProject, Donation
 from datetime import datetime
 
@@ -18,9 +16,9 @@ def investment(
     :param new_obj: - только что созданное пожертвование/проект
     :param model:  - модель, открытые объекты которой мы будем перебирать.
     """
-    data_mass = [] # выходной массив данных открытых проектов
+    data_mass = []  # выходной массив данных открытых проектов
     for open_obj in sourses:
-        #targer, open_obj = reinvestment(targer, open_obj)     
+        #targer, open_obj = reinvestment(targer, open_obj)
         """Перераспределяет средства между проектами и пожертвованиями."""
         # сколько не хватает для закрытия нового проекта
         to_close_new_obj = target.full_amount - target.invested_amount
@@ -28,7 +26,7 @@ def investment(
         to_close_open_obj = open_obj.full_amount - open_obj.invested_amount
         append_obj = min(to_close_new_obj, to_close_open_obj)
         target.invested_amount += append_obj
-        open_obj.invested_amount += append_obj        
+        open_obj.invested_amount += append_obj
         if open_obj.invested_amount == open_obj.full_amount:
             """Закрывает объект и добавляет дату закрытия."""
             open_obj.fully_invested = True

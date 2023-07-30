@@ -51,10 +51,10 @@ class DonationCBV:
     ) -> DonationDBResponse:
         """Создает пожертвование."""
         new_donation = await donation_crud.create(donation, self.session, user)
-        
+
         all_open_obj = await self.session.execute(
-        select(CharityProject).where(CharityProject.fully_invested.is_(False))
-    )
+            select(CharityProject).where(CharityProject.fully_invested.is_(False))
+        )
         all_open_obj = all_open_obj.scalars().all()
         new_donation, open_project = investing_sevice.investment(new_donation, all_open_obj)
         self.session.add(new_donation)

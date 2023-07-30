@@ -55,13 +55,13 @@ class CharityProjectCBV:
         await validators.check_name_duplicate(new_project, self.session)
         new_project = await charity_project_crud.create(new_project, self.session)
         all_open_obj = await self.session.execute(
-        select(Donation).where(Donation.fully_invested.is_(False))
-    )
+            select(Donation).where(Donation.fully_invested.is_(False))
+        )
         all_open_obj = all_open_obj.scalars().all()
         new_project, open_project = investing_sevice.investment(new_project, all_open_obj)
         # добавление объектов
         self.session.add(new_project)
-        self.session.add_all(open_project)     
+        self.session.add_all(open_project)
         await self.session.commit()
         await self.session.refresh(new_project)
         return new_project

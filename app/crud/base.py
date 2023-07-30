@@ -1,11 +1,11 @@
 from typing import Optional
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-#from app.services import investing_sevice
 from app.models import User
 from fastapi.encoders import jsonable_encoder
 from fastapi import HTTPException
 from datetime import datetime
+
 
 class CRUDBase:
     def __init__(self, model):
