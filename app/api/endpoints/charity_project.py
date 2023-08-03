@@ -3,10 +3,8 @@ from typing import List
 from fastapi import APIRouter, Depends
 from fastapi_restful.cbv import cbv
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
 
 from app.api import validators
-from app.models import Donation
 from app.core.db import get_async_session
 from app.services import investing_sevice
 from app.core.user import current_superuser

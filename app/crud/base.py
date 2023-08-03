@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Optional, Union
+from typing import Optional
 
 from app.models import User
 from fastapi import HTTPException

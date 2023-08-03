@@ -1,7 +1,5 @@
-from datetime import datetime
-from sqlalchemy import Boolean, Column, DateTime, Integer
+from sqlalchemy import Column, Integer
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.ext.declarative import as_declarative
 from sqlalchemy.orm import declared_attr, sessionmaker, declarative_base
 
 from app.core.config import settings
