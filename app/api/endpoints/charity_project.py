@@ -11,6 +11,7 @@ from app.core.db import get_async_session
 from app.services import investing_sevice
 from app.core.user import current_superuser
 from app.crud.charity_project import charity_project_crud
+from app.crud.donation import donation_crud
 from app.schemas.charity_project import (
     CharityProjectDBResponse,
     CharityProjectUpdateRequest,
@@ -54,14 +55,12 @@ class CharityProjectCBV:
         """
         await validators.check_name_duplicate(new_project, self.session)
         new_project = await charity_project_crud.create(new_project, self.session)
-        all_open_obj = await self.session.execute(
-            select(Donation).where(Donation.fully_invested.is_(False))
+        donations = await donation_crud.get_open_objects(self.session)
+        donations = investing_sevice.investment(
+            new_project,
+            donations
         )
-        all_open_obj = all_open_obj.scalars().all()
-        new_project, open_project = investing_sevice.investment(new_project, all_open_obj)
-        # добавление объектов
-        self.session.add(new_project)
-        self.session.add_all(open_project)
+        self.session.add_all(donations)
         await self.session.commit()
         await self.session.refresh(new_project)
         return new_project
@@ -79,7 +78,8 @@ class CharityProjectCBV:
     ) -> CharityProjectDBResponse:
         """
         Только для суперюзеров.\n
-        Закрытый проект нельзя редактировать, также нельзя установить требуемую сумму меньше уже вложенной.
+        Закрытый проект нельзя редактировать,
+        также нельзя установить требуемую сумму меньше уже вложенной.
         """
         project = await charity_project_crud.get_by_id(project_id, self.session)
         await validators.update_charity_project(project, project_request, self.session)

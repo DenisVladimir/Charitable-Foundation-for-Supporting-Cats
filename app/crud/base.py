@@ -1,10 +1,11 @@
-from typing import Optional
+from datetime import datetime
+from typing import List, Optional, Union
+
+from app.models import User
+from fastapi import HTTPException
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.models import User
-from fastapi.encoders import jsonable_encoder
-from fastapi import HTTPException
-from datetime import datetime
 
 
 class CRUDBase:
@@ -17,6 +18,17 @@ class CRUDBase:
     ):
         """Возвращает все объекты из БД текущей модели."""
         db_objs = await session.execute(select(self._model))
+        return db_objs.scalars().all()
+
+    async def get_open_objects(
+            self,
+            session: AsyncSession,
+    ):
+        db_objs = await session.execute(
+            select(self._model).where(
+                self._model.fully_invested.is_(False)
+            )
+        )
         return db_objs.scalars().all()
 
     async def get(

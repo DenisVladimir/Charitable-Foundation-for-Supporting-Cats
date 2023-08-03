@@ -1,40 +1,32 @@
-from typing import Union
-from app.models import CharityProject, Donation
+from typing import Union, List
+from app.schemas.charity_project import CharityProjectDBResponse
+from app.schemas.donation import DonationDBResponse 
 from datetime import datetime
 
 
 def investment(
-    target: Union[CharityProject, Donation],
-    sourses: Union[CharityProject, Donation],
-) -> None:
+    target,
+    sourses,
+) -> List[Union[CharityProjectDBResponse, DonationDBResponse]]:
     """
     Перебирает открытые проекты/пожертвования,
     закрывает пожертвования/проекты при достижении лимита.
     При создании пожертвования перебирает открытые проекты.
     При создании проекта перебирает свободные пожертвования.
-
-    :param new_obj: - только что созданное пожертвование/проект
-    :param model:  - модель, открытые объекты которой мы будем перебирать.
     """
-    data_mass = []  # выходной массив данных открытых проектов
+
+    exit_objects = []
     for open_obj in sourses:
-        #targer, open_obj = reinvestment(targer, open_obj)
         """Перераспределяет средства между проектами и пожертвованиями."""
-        # сколько не хватает для закрытия нового проекта
-        to_close_new_obj = target.full_amount - target.invested_amount
-        # Сколько осталось в открытом пожертвовании
-        to_close_open_obj = open_obj.full_amount - open_obj.invested_amount
-        append_obj = min(to_close_new_obj, to_close_open_obj)
-        target.invested_amount += append_obj
-        open_obj.invested_amount += append_obj
-        if open_obj.invested_amount == open_obj.full_amount:
-            """Закрывает объект и добавляет дату закрытия."""
-            open_obj.fully_invested = True
-            open_obj.close_date = datetime.now()
-        data_mass.append(open_obj)
-        if target.invested_amount == target.full_amount:
-            """Закрывает объект и добавляет дату закрытия."""
-            target.fully_invested = True
-            target.close_date = datetime.now()
-            break
-    return target, data_mass
+        append_obj = min(
+            target.full_amount - target.invested_amount,
+            open_obj.full_amount - open_obj.invested_amount
+        )
+        for object in target, open_obj:
+            object.invested_amount += append_obj
+            if object.invested_amount == open_obj.full_amount:
+                object.fully_invested = True
+                object.close_date = datetime.now()
+                break
+        exit_objects.append(open_obj)
+    return exit_objects

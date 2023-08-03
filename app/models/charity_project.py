@@ -1,16 +1,14 @@
 from sqlalchemy import Column, String, Text
+from app.models.base_model import BaseModel
 
-from app.core.db import Base
 
-
-class CharityProject(Base):
+class CharityProject(BaseModel):
     name = Column(String(100), unique=True, nullable=False)
     description = Column(Text, nullable=False)
 
     def __repr__(self):
+        base_repr = super().__repr__()
         return (
-            f"<Name: {self.name}, "
-            f"full_amount: {self.full_amount}, "
-            f"invested_amount: {self.invested_amount}, "
-            f"fully_invested: {self.fully_invested}>"
+            f'<Name: {self.name}, '
+            f'{base_repr},>'
         )

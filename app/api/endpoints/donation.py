@@ -10,6 +10,7 @@ from app.core.db import get_async_session
 from app.services import investing_sevice
 from app.core.user import current_superuser, current_user
 from app.crud.donation import donation_crud
+from app.crud.charity_project import charity_project_crud
 from app.schemas.donation import (
     DonationDBResponse,
     DonationAdminDBResponse,
@@ -51,14 +52,13 @@ class DonationCBV:
     ) -> DonationDBResponse:
         """Создает пожертвование."""
         new_donation = await donation_crud.create(donation, self.session, user)
-
-        all_open_obj = await self.session.execute(
-            select(CharityProject).where(CharityProject.fully_invested.is_(False))
+      
+        charity_projects = await charity_project_crud.get_open_objects(self.session)
+        charity_projects = investing_sevice.investment(
+            new_donation,
+            charity_projects
         )
-        all_open_obj = all_open_obj.scalars().all()
-        new_donation, open_project = investing_sevice.investment(new_donation, all_open_obj)
-        self.session.add(new_donation)
-        self.session.add_all(open_project)
+        self.session.add_all(charity_projects)
         await self.session.commit()
         await self.session.refresh(new_donation)
         return new_donation

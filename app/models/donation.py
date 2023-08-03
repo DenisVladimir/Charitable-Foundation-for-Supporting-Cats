@@ -5,17 +5,16 @@ from sqlalchemy import (
     Text,
 )
 
-from app.core.db import Base
+from app.models.base_model import BaseModel
 
 
-class Donation(Base):
+class Donation(BaseModel):
     user_id = Column(Integer, ForeignKey("user.id"))
     comment = Column(Text)
 
     def __repr__(self):
+        base_repr = super().__repr__()
         return (
-            f"<User_id: {self.user_id}, "
-            f"full_amount: {self.full_amount}, "
-            f"invested_amount: {self.invested_amount}, "
-            f"fully_invested: {self.fully_invested}>"
+            f'<User_id: {self.user_id}, '
+            f'{base_repr},>'
         )
