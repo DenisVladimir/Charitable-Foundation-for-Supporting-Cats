@@ -3,7 +3,7 @@ from sqlalchemy import Boolean, Column, DateTime, Integer, CheckConstraint
 from datetime import datetime
 
 
-class BaseModel(Base):
+class AbstractBase(Base):
     __abstract__ = True
     __table_args__ = (
         CheckConstraint('full_amount > 0'),
@@ -17,8 +17,8 @@ class BaseModel(Base):
 
     def __repr__(self):
         return (
-            f"<Name: {self.name}, "
+            f"Name: {self.name}, "
             f"full_amount: {self.full_amount}, "
             f"invested_amount: {self.invested_amount}, "
-            f"fully_invested: {self.fully_invested}>"
+            f"fully_invested: {self.fully_invested}"
         )

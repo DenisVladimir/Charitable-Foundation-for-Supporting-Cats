@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api import validators
 from app.core.db import get_async_session
-from app.services import investing_sevice
+from app.services import investing_services
 from app.core.user import current_superuser
 from app.crud.charity_project import charity_project_crud
 from app.crud.donation import donation_crud
@@ -54,7 +54,7 @@ class CharityProjectCBV:
         await validators.check_name_duplicate(new_project, self.session)
         new_project = await charity_project_crud.create(new_project, self.session)
         donations = await donation_crud.get_open_objects(self.session)
-        donations = investing_sevice.investment(
+        donations = investing_services.investment(
             new_project,
             donations
         )

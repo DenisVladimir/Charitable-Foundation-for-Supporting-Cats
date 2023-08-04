@@ -1,13 +1,13 @@
-from typing import Union, List
-from app.schemas.charity_project import CharityProjectDBResponse
-from app.schemas.donation import DonationDBResponse
 from datetime import datetime
+from typing import List, Union
+from app.models.base_model import AbstractBase
+from app.models import CharityProject, Donation
 
 
 def investment(
-    target,
-    sourses,
-) -> List[Union[CharityProjectDBResponse, DonationDBResponse]]:
+    target: CharityProject,
+    sourses:Donation
+) -> AbstractBase:
     """
     Перебирает открытые проекты/пожертвования,
     закрывает пожертвования/проекты при достижении лимита.
@@ -27,6 +27,5 @@ def investment(
             if object.invested_amount == open_obj.full_amount:
                 object.fully_invested = True
                 object.close_date = datetime.now()
-                break
         exit_objects.append(open_obj)
     return exit_objects
