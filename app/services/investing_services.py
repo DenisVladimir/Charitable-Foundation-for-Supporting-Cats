@@ -1,12 +1,12 @@
 from datetime import datetime
-from typing import List, Union
-from app.models.base_model import AbstractBase
+
 from app.models import CharityProject, Donation
+from app.models.base_model import AbstractBase
 
 
 def investment(
     target: CharityProject,
-    sourses:Donation
+    sourses: Donation
 ) -> AbstractBase:
     """
     Перебирает открытые проекты/пожертвования,
