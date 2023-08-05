@@ -26,5 +26,5 @@ def investment(
             object.invested_amount += append_obj
             if object.invested_amount == open_obj.full_amount:
                 object.fully_invested = True
-                object.close_date = datetime.now()     
+                object.close_date = datetime.now()
     return sourses
