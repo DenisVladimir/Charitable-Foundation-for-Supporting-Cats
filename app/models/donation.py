@@ -5,15 +5,15 @@ from sqlalchemy import (
     Text,
 )
 
-from app.models.base_model import AbstractBase
+from app.models.base_model import OverallInvestmentPerformance
 
 
-class Donation(AbstractBase):
+class Donation(OverallInvestmentPerformance):
     user_id = Column(Integer, ForeignKey("user.id"))
     comment = Column(Text)
 
     def repr(self):
         return (
             f'User_id: {self.user_id}, '
-            f'{super().repr()}'
+            f'{super().__repr__()}'
         )
