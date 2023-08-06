@@ -1,13 +1,13 @@
 from datetime import datetime
 from typing import List
 
-from app.crud.base import CRUDBase
+from app.models.base_model import OverallInvestmentPerformance
 
 
 def investment(
-    target: CRUDBase,
-    sourses: List[CRUDBase]
-) -> List[CRUDBase]:
+    target: OverallInvestmentPerformance,
+    sourses: List[OverallInvestmentPerformance]
+) -> List[OverallInvestmentPerformance]:
     """
     Перебирает открытые проекты/пожертвования,
     закрывает пожертвования/проекты при достижении лимита.
