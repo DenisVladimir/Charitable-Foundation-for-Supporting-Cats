@@ -1,14 +1,12 @@
 from datetime import datetime
-from typing import List, Union
+from typing import List
 
 from app.crud.base import CRUDBase
-from app.crud.charity_project import CRUDCharityProject
-from app.crud.donation import CRUDDonation
 
 
 def investment(
-    target: Union[CRUDCharityProject, CRUDDonation],
-    sourses: List[Union[CRUDCharityProject, CRUDDonation]]
+    target: CRUDBase,
+    sourses: List[CRUDBase]
 ) -> List[CRUDBase]:
     """
     Перебирает открытые проекты/пожертвования,
@@ -30,6 +28,5 @@ def investment(
             if object.invested_amount == open_obj.full_amount:
                 object.fully_invested = True
                 object.close_date = datetime.now()
-            if object in sourses:
-                changed_objects.append(object)
+        changed_objects.append(object)
     return changed_objects
