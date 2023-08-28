@@ -1,3 +1,5 @@
+from typing import Optional
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from app.models import CharityProject
@@ -19,6 +21,10 @@ class CRUDCharityProject(CRUDBase):
         )
         return db_project_id.scalar()
 
+<<<<<<< HEAD
+=======
+        # Функция сортировки проектов по времени закрытия
+>>>>>>> fde3c44175731f246615db0909a3c7b14e8a2d00
     async def get_projects_by_completion_rate(
             self,
             session: AsyncSession,
@@ -34,6 +40,9 @@ class CRUDCharityProject(CRUDBase):
         )
         close_projects = close_projects.all()
         return close_projects
+<<<<<<< HEAD
 
+=======
+>>>>>>> fde3c44175731f246615db0909a3c7b14e8a2d00
 
 charity_project_crud = CRUDCharityProject(CharityProject)
